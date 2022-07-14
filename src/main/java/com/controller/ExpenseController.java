@@ -1,7 +1,11 @@
 package com.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,5 +42,21 @@ public class ExpenseController {
 		
 		
 		return responseBean;
+	}
+	@GetMapping("listexpense/{userid}")
+	public ResponseBean<List<ExpenseEntity>> listexpense(@PathVariable("userid")Long userid)
+	{
+		ResponseBean<List<ExpenseEntity>> response = new ResponseBean<>();
+		List<ExpenseEntity> exepEntities=expenseRepositry.getAllExpneseByUserid(userid);
+		if(exepEntities !=null) {
+			response.setData(exepEntities);
+			response.setMessage("List of Expesne for user");
+			response.setStatus(200);
+		}else {
+			response.setMessage("User does not exits");
+			response.setStatus(400);
+		}
+		
+		return response;
 	}
 }
